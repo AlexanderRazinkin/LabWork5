@@ -1,4 +1,4 @@
-package collection;
+package dragon;
 
 public enum DragonCharacter {
     WISE,

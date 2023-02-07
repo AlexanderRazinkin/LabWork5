@@ -1,4 +1,4 @@
-package collection;
+package dragon;
 
 public class DragonCave {
     private Integer depth; //Поле не может быть null

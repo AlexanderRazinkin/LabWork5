@@ -1,4 +1,4 @@
-package collection;
+package dragon;
 
 import java.time.LocalDate;
 
@@ -24,6 +24,14 @@ public class Dragon {
         this.type = type;
         this.character = character;
         this.cave = cave;
+    }
+
+    @Override
+    public String toString() {
+        return "Dragon{id='" + id + "', name='" + name + "', coordinates=['" + coordinates.getX() + "'; '" +
+                coordinates.getY() + "'], creationDate='" + creationDate.toString() + "', age='" + age + "', " +
+                "color='" + color.toString() + "', type='" + type.toString() + "', character='" + character.toString() +
+                "', cave='" + cave.getDepth() + "'}";
     }
 
     public int getId() {
