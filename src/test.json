@@ -8,7 +8,7 @@
       1.0,
       1
     ],
-    "creationDate": "2023-02-07",
+    "creationDate": "2023-02-08",
     "type": "AIR",
     "age": 10
   },
@@ -21,8 +21,21 @@
       1.0,
       1
     ],
-    "creationDate": "2023-02-07",
+    "creationDate": "2023-02-08",
     "type": "AIR",
     "age": 10
+  },
+  {
+    "character": "WISE",
+    "depth": -213,
+    "color": "BROWN",
+    "name": "alex",
+    "coordinates": [
+      10.1,
+      312
+    ],
+    "creationDate": "2023-02-08",
+    "type": "UNDERGROUND",
+    "age": 421
   }
 ]

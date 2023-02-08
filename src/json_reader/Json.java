@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Json {
 
-    public void writeJsonFile(String filePath, ArrayList<Dragon> dragonList) {
+    public static void writeJsonFile(String filePath, ArrayList<Dragon> dragonList) {
 
         JSONArray dragonArray = new JSONArray();
 
@@ -52,7 +52,7 @@ public class Json {
 
     }
 
-    public ArrayList<Dragon> readJsonFile(String filePath) {
+    public static ArrayList<Dragon> readJsonFile(String filePath) {
 
         ArrayList<Dragon> dragonList = new ArrayList<>();
         JSONParser parser = new JSONParser();
@@ -66,9 +66,8 @@ public class Json {
                 String name = (String) obj.get("name");
 
                 JSONArray coordinatesArray = (JSONArray) obj.get("coordinates");
-                double x = (Double) coordinatesArray.get(0);
+                Double x = (Double) coordinatesArray.get(0);
                 Long y = (Long) coordinatesArray.get(1);
-                Coordinates coordinates = new Coordinates((float) x, (int) y.longValue());
 
                 LocalDate creationDate = LocalDate.parse((String) obj.get("creationDate"));
 
@@ -81,16 +80,51 @@ public class Json {
                 DragonCharacter character = DragonCharacter.valueOf((String) obj.get("character"));
 
                 Long depth = (Long) obj.get("depth");
-                DragonCave cave = new DragonCave((int) depth.longValue());
 
-                Dragon dragon = new Dragon(i + 1, name, coordinates, creationDate, age, color, type,
-                        character, cave);
+                if (name == null) {
+                    System.out.println("У объекта-" + i + 1 + " отсутствует \"name\" в файле!");
+                    continue;
+                } else if (coordinatesArray == null) {
+                    System.out.println("У объекта-" + i + 1 + " отсутствует \"coordinates\" в файле!");
+                    continue;
+                } else if (x == null) {
+                    System.out.println("У объекта-" + i + 1 + " отсутствует значение \"x\" в файле!");
+                    continue;
+                } else if (y == 0) {
+                    System.out.println("У объекта-" + i + 1 + " отсутствует значение \"y\" в файле!");
+                    continue;
+                } else if (creationDate == null) {
+                    System.out.println("У объекта-" + i + 1 + " отсутствует \"creationDate\" в файле!");
+                    continue;
+                } else if (age == null) {
+                    System.out.println("У объекта-" + i + 1 + " отсутствует \"age\" в файле!");
+                    continue;
+                } else if (color == null) {
+                    System.out.println("У объекта-" + i + 1 + " отсутствует \"age\" в файле!");
+                    continue;
+                } else if (type == null) {
+                    System.out.println("У объекта-" + i + 1 + " отсутствует \"type\" в файле!");
+                    continue;
+                } else if (character == null) {
+                    System.out.println("У объекта-" + i + 1 + " отсутствует \"character\" в файле!");
+                    continue;
+                } else if (depth == null) {
+                    System.out.println("У объекта-" + i + 1 + " отсутствует \"depth\" в файле!");
+                    continue;
+                }
+
+                Dragon dragon = new Dragon(name, new Coordinates((float) x.doubleValue(), (int) y.longValue()),
+                        creationDate, age, color, type, character, new DragonCave((int) depth.longValue()));
 
                 dragonList.add(dragon);
             }
 
-        } catch (IOException | ParseException e) {
+        } catch (FileNotFoundException e) {
+            System.out.println("Файла по указаному пути не существует!");
+        } catch (IOException e) {
             e.printStackTrace();
+        } catch (ParseException e) {
+            System.out.println("Файл поврежден! Перепроверьте корректность его заполнения!");
         }
         return dragonList;
     }

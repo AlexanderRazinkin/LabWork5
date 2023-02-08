@@ -1,3 +1,5 @@
+package collection;
+
 import dragon.Dragon;
 
 import java.time.LocalDate;
@@ -7,11 +9,15 @@ public class DragonCollection {
 
     private ArrayList<Dragon> dragonArray;
     private LocalDate creationDate;
+    private String startFilePath;
 
-    public DragonCollection(ArrayList<Dragon> dragonArray) {
+
+    public DragonCollection(ArrayList<Dragon> dragonArray, String startFilePath) {
         this.dragonArray = dragonArray;
+        this.startFilePath = startFilePath;
         creationDate = LocalDate.now();
     }
+
 
     public ArrayList<Dragon> getDragonArray() {
         return dragonArray;
@@ -20,4 +26,9 @@ public class DragonCollection {
     public LocalDate getCreationDate() {
         return creationDate;
     }
+
+    public String getStartFilePath() {
+        return startFilePath;
+    }
+
 }
