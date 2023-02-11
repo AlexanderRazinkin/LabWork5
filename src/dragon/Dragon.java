@@ -2,7 +2,7 @@ package dragon;
 
 import java.time.LocalDate;
 
-public class Dragon implements Comparable<Dragon> {
+public class Dragon {
 
     private static int objCount = 1;
     private int id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
@@ -29,22 +29,11 @@ public class Dragon implements Comparable<Dragon> {
     }
 
     @Override
-    public int compareTo(Dragon dragon) {
-        if (age > dragon.age) {
-            return 1;
-        } else if (age == dragon.age) {
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-
-    @Override
     public String toString() {
         return "Dragon{id='" + id + "', name='" + name + "', coordinates=['" + coordinates.getX() + "'; '" +
                 coordinates.getY() + "'], creationDate='" + creationDate.toString() + "', age='" + age + "', " +
-                "color='" + color.toString() + "', type='" + type.toString() + "', character='" + character.toString() +
-                "', cave='" + cave.getDepth() + "'}";
+                "color='" + color.toString() + "', type='" + type.toString() + "', character='" +
+                (character == null ? null : character.toString()) + "', cave='" + (cave == null ? null : cave.getDepth()) + "'}";
     }
 
     public int getId() {

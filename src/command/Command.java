@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Command {
+public abstract class Command {
 
     private static ArrayList<String> commandList;
 
@@ -29,6 +29,7 @@ public class Command {
         commandList.add("remove_any_by_type");
         commandList.add("sum_of_age");
         commandList.add("print_field_ascending_color");
+        commandList.add("execute_script");
     }
 
     protected static Dragon getNewDragon() {

@@ -1,12 +1,13 @@
 package command;
 
 import collection.DragonCollection;
-import json_reader.Json;
+import parsers.JsonParser;
 
 public class Save extends Command {
 
     public void execute(DragonCollection collection) {
-        Json.writeJsonFile(collection.getStartFilePath(), collection.getDragonArray());
+        JsonParser json = new JsonParser();
+        json.write(collection.getStartFilePath(), collection.getDragonArray());
     }
 
 }

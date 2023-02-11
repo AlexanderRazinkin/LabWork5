@@ -17,59 +17,65 @@ public class UserRequest {
     public static void requestCommand(DragonCollection collection) {
         scanner = new Scanner(System.in);
         System.out.print("Введите команду: ");
-        String[] inputArguments = scanner.nextLine().split(" ");
-        
+        String userAnswer = scanner.nextLine().strip();
+
+        while (userAnswer.contains("  "))
+            userAnswer = userAnswer.replaceAll("  ", " ");
+
+        String[] inputArguments = userAnswer.split(" ");
         Command command;
         String commandArgument;
-        
+
         if (!Command.getcommandList().contains(inputArguments[0]) || inputArguments.length > 2) {
-            System.out.println("Такой команды не существует! Вводите команду без лишних пробелов в начале!" +
-                    " А также учтите, что между словами ставится ОДИН пробел!");
+            System.out.println("Такой команды не существует! Для ознакомления с командами используйте команду help!");
             return;
         } else {
             switch (inputArguments[0]) {
                 case "help":
-                    checkArguments(collection, inputArguments, new Help(), 1);
+                    UserRequest.checkArguments(collection, inputArguments, new Help(), 1);
                     break;
                 case "info":
-                    checkArguments(collection, inputArguments, new Info(), 1);
+                    UserRequest.checkArguments(collection, inputArguments, new Info(), 1);
                     break;
                 case "show":
-                    checkArguments(collection, inputArguments, new Show(), 1);
+                    UserRequest.checkArguments(collection, inputArguments, new Show(), 1);
                     break;
                 case "add":
-                    checkArguments(collection, inputArguments, new Add(), 1);
+                    UserRequest.checkArguments(collection, inputArguments, new Add(), 1);
                     break;
                 case "exit":
-                    checkArguments(collection, inputArguments, new Exit(), 1);
+                    UserRequest.checkArguments(collection, inputArguments, new Exit(), 1);
                     isWorking = false;
                     break;
                 case "clear":
-                    checkArguments(collection, inputArguments, new Clear(), 1);
+                    UserRequest.checkArguments(collection, inputArguments, new Clear(), 1);
                     break;
                 case "save":
-                    checkArguments(collection, inputArguments, new Save(), 1);
+                    UserRequest.checkArguments(collection, inputArguments, new Save(), 1);
                     break;
                 case "add_if_max":
-                    checkArguments(collection, inputArguments, new AddIfMax(), 1);
+                    UserRequest.checkArguments(collection, inputArguments, new AddIfMax(), 1);
                     break;
                 case "remove_greater":
-                    checkArguments(collection, inputArguments, new RemoveGreater(), 1);
+                    UserRequest.checkArguments(collection, inputArguments, new RemoveGreater(), 1);
                     break;
                 case "sum_of_age":
-                    checkArguments(collection, inputArguments, new SumOfAge(), 1);
+                    UserRequest.checkArguments(collection, inputArguments, new SumOfAge(), 1);
                     break;
                 case "print_field_ascending_color":
-                    checkArguments(collection, inputArguments, new PrintFieldAscendingColor(), 1);
+                    UserRequest.checkArguments(collection, inputArguments, new PrintFieldAscendingColor(), 1);
                     break;
                 case "remove_by_id":
-                    checkArguments(collection, inputArguments, new RemoveById(), 2);
+                    UserRequest.checkArguments(collection, inputArguments, new RemoveById(), 2);
                     break;
                 case "remove_at":
-                    checkArguments(collection, inputArguments, new RemoveAtIndex(), 2);
+                    UserRequest.checkArguments(collection, inputArguments, new RemoveAtIndex(), 2);
                     break;
                 case "remove_any_by_type":
-                    checkArguments(collection, inputArguments, new RemoveAnyByType(), 2);
+                    UserRequest.checkArguments(collection, inputArguments, new RemoveAnyByType(), 2);
+                    break;
+                case "execute_script":
+                    UserRequest.checkArguments(collection, inputArguments, new ExecuteScript(), 2);
             }
         }
     }
@@ -78,8 +84,12 @@ public class UserRequest {
 
         ArrayList<Object> characteristics = new ArrayList<>();
 
-        System.out.print("Введите имя: ");
-        String name = scanner.nextLine();
+        String name;
+
+        do {
+            System.out.print("Введите ненулевое имя: ");
+            name = scanner.nextLine().strip();
+        } while (name.equals(""));
         characteristics.add(name);
 
         Float x;
@@ -98,7 +108,10 @@ public class UserRequest {
             try {
                 System.out.print("Введите координату y в типе данных int: ");
                 y = scanner.nextInt();
-                break;
+                if (y > -323)
+                    break;
+                else
+                    System.out.println("Координата y должна быть больше -323");
             } catch (InputMismatchException e) {
                 System.out.println("Требуется ввести число в типе данных int!");
                 scanner.next();
@@ -115,7 +128,11 @@ public class UserRequest {
             try {
                 System.out.print("Введите возраст в типе данных long: ");
                 age = scanner.nextLong();
-                break;
+                if (age > 0) {
+                    break;
+                } else {
+                    System.out.println("Возраст должен быть больше 0!");
+                }
             } catch (InputMismatchException e) {
                 System.out.println("Требуется ввести число в типе данных long!");
                 scanner.next();
@@ -136,23 +153,44 @@ public class UserRequest {
         characteristics.add(type);
 
         DragonCharacter character;
-        do {
-            character = (DragonCharacter) requestEnum(DragonCharacter.values(), "характер");
-        } while (character == null);
-        characteristics.add(character);
 
-        Integer depth;
         while (true) {
-            try {
-                System.out.print("Введите глубину пещеры в типе данных int: ");
-                depth = scanner.nextInt();
+            scanner = new Scanner(System.in);
+            System.out.println("Сделать характер null?");
+            System.out.print("Введите ответ да/нет: ");
+            String userAnswer = scanner.nextLine().strip();
+            if (userAnswer.equals("да")) {
+                character = null;
                 break;
-            } catch (InputMismatchException e) {
-                System.out.println("Требуется ввести число в типе данных int!");
-                scanner.next();
+            } else if (userAnswer.equals(("нет"))) {
+                character = (DragonCharacter) requestEnum(DragonCharacter.values(), "характер");
+                break;
+            } else {
+                System.out.println("Требуется ввести да/нет!");
             }
         }
-        DragonCave cave = new DragonCave(depth);
+
+        characteristics.add(character);
+
+        scanner = new Scanner(System.in);
+        String depth;
+        DragonCave cave;
+        while (true) {
+            System.out.print("Введите глубину пещеры в типе данных int: ");
+            depth = scanner.nextLine().strip();
+            if (depth.equals("")) {
+                cave = null;
+                break;
+            } else {
+                try {
+                    cave = new DragonCave(Integer.parseInt(depth));
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Требуется ввести целое число!");
+                }
+            }
+        }
+
         characteristics.add(cave);
         return characteristics;
     }
@@ -161,12 +199,13 @@ public class UserRequest {
 
         int i = 0;
 
-        System.out.println("Выберите " + name + ":");
+        if (values[0] instanceof DragonCharacter)
+
+            System.out.println("Выберите " + name + ":");
         for (Object value : values) {
             System.out.println("\t" + ++i + "-" + value.toString());
         }
         System.out.print("Введите целое число от 1 до " + values.length + ": ");
-
         int userAnswer;
 
         try {
@@ -179,28 +218,32 @@ public class UserRequest {
         if (userAnswer >= 1 && userAnswer <= i) {
             return values[userAnswer - 1];
         } else {
-            System.out.println("Трубуется ввести целое число от 1 до" + values.length + "!");
+            System.out.println("Требуется ввести целое число от 1 до " + values.length + "!");
             return null;
         }
+
     }
 
-    public static boolean isIsWorking() {
+    public static void setIsWorking(boolean isWorking) {
+        UserRequest.isWorking = isWorking;
+    }
+    public static boolean isWorking() {
         return isWorking;
     }
 
-    private static void checkArguments(DragonCollection collection, String[] inputArguments, Command command, 
+    public static void checkArguments(DragonCollection collection, String[] inputArguments, Command command,
                                        int argumentCount) {
         if (inputArguments.length == argumentCount)
             if (argumentCount == 1)
                 command.execute(collection);
             else if (argumentCount == 2)
                 command.execute(collection, inputArguments[1]);
-        else {
-            if (argumentCount == 1) 
-                System.out.println("Данная команда не имеет аргументов!");
-            else if (argumentCount == 2)
-                System.out.println("Данная команда имеет один аргумент!");
-        }
+            else {
+                if (argumentCount == 1)
+                    System.out.println("Данная команда не имеет аргументов!");
+                else if (argumentCount == 2)
+                    System.out.println("Данная команда имеет один аргумент!");
+            }
     }
-    
+
 }
