@@ -1,6 +1,5 @@
 package command;
 
-import collection.DragonCollection;
 import collection.SortByAge;
 import dragon.Dragon;
 
@@ -13,8 +12,9 @@ public class AddIfMax extends Command {
     @Override
     public void execute() {
         Dragon dragon = Dragon.getNewDragon();
-
-        if (dragon.getAge() > CommandManager.getDragonCollection().getDragonArray().get(-1).getAge()) {
+        if (CommandManager.getDragonCollection().getDragonArray().isEmpty() ||
+                dragon.getAge() > CommandManager.getDragonCollection().getDragonArray().get(
+                CommandManager.getDragonCollection().getDragonArray().size() - 1).getAge()) {
             CommandManager.getDragonCollection().getDragonArray().add(dragon);
             CommandManager.getDragonCollection().getDragonArray().sort(new SortByAge());
             System.out.println("Элемент успешно добавлен в текущую коллекцию!");
