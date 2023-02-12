@@ -9,7 +9,7 @@ public class DragonCollection {
 
     private ArrayList<Dragon> dragonArray;
     private LocalDate creationDate;
-    private String startFilePath;
+    private String startFilePath = "";
 
 
     public DragonCollection(ArrayList<Dragon> dragonArray, String startFilePath) {

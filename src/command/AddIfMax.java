@@ -6,16 +6,31 @@ import dragon.Dragon;
 
 public class AddIfMax extends Command {
 
-    public void execute(DragonCollection collection) {
+    public AddIfMax() {
+        super(false);
+    }
 
-        Dragon dragon = getNewDragon();
+    @Override
+    public void execute() {
+        Dragon dragon = Dragon.getNewDragon();
 
-        if (dragon.getAge() > collection.getDragonArray().get(collection.getDragonArray().size() - 1).getAge()) {
-            collection.getDragonArray().add(dragon);
-            collection.getDragonArray().sort(new SortByAge());
+        if (dragon.getAge() > getDragonCollection().getDragonArray().get(-1).getAge()) {
+            getDragonCollection().getDragonArray().add(dragon);
+            getDragonCollection().getDragonArray().sort(new SortByAge());
             System.out.println("Элемент успешно добавлен в текущую коллекцию!");
         } else {
             System.out.println("Элемент не добавлен в текущую коллекцию!");
         }
     }
+
+    @Override
+    public boolean checkArgument(Object inputArgument) {
+        if (inputArgument == null)
+            return true;
+        else {
+            System.out.println("Команда add_if_max не имеет аргументов!");
+            return false;
+        }
+    }
+
 }

@@ -1,4 +1,5 @@
 import collection.DragonCollection;
+import command.Command;
 import parsers.JsonParser;
 import user.UserRequest;
 
@@ -12,10 +13,12 @@ public class Programm {
 
         JsonParser jsonParser = new JsonParser();
         DragonCollection collection = new DragonCollection(jsonParser.read(args[0]), args[0]);
+        Command.setDragonCollection(collection);
 
         while (UserRequest.isWorking()) {
-            UserRequest.requestCommand(collection);
+            UserRequest.requestCommand();
         }
+
 
     }
 }

@@ -6,81 +6,52 @@ import dragon.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserRequest {
-    private static Scanner scanner = new Scanner(System.in);
-    private static boolean isWorking = true;
 
+    private static HashMap<String, Command> commandMap;
+    private static Scanner scanner;
+    private static boolean isWorking;
 
-    public static void requestCommand(DragonCollection collection) {
+    static {
+        commandMap = Command.getCommandMap();
         scanner = new Scanner(System.in);
+        isWorking = true;
+    }
+
+    public static void requestCommand() {
         System.out.print("Введите команду: ");
-        String userAnswer = scanner.nextLine().strip();
+        String userRequest = scanner.nextLine().strip();
 
-        while (userAnswer.contains("  "))
-            userAnswer = userAnswer.replaceAll("  ", " ");
+        while (userRequest.contains("  "))
+            userRequest = userRequest.replaceAll("  ", " ");
 
-        String[] inputArguments = userAnswer.split(" ");
-        Command command;
-        String commandArgument;
+        String[] commandAndArgument = userRequest.split(" ");
+        String command = commandAndArgument[0];
+        String argument;
 
-        if (!Command.getcommandList().contains(inputArguments[0]) || inputArguments.length > 2) {
-            System.out.println("Такой команды не существует! Для ознакомления с командами используйте команду help!");
+        if (commandAndArgument.length == 1)
+            argument = null;
+        else if (commandAndArgument.length == 2)
+            argument = commandAndArgument[1];
+        else {
+            System.out.println("Требуется ввести *команда* *аргумент* (при его наличии)!");
             return;
+        }
+
+        if (commandMap.containsKey(commandAndArgument[0])) {
+            commandMap.get(commandAndArgument[0]).setArgument(argument);
+            commandMap.get(commandAndArgument[0]).execute();
         } else {
-            switch (inputArguments[0]) {
-                case "help":
-                    UserRequest.checkArguments(collection, inputArguments, new Help(), 1);
-                    break;
-                case "info":
-                    UserRequest.checkArguments(collection, inputArguments, new Info(), 1);
-                    break;
-                case "show":
-                    UserRequest.checkArguments(collection, inputArguments, new Show(), 1);
-                    break;
-                case "add":
-                    UserRequest.checkArguments(collection, inputArguments, new Add(), 1);
-                    break;
-                case "exit":
-                    UserRequest.checkArguments(collection, inputArguments, new Exit(), 1);
-                    isWorking = false;
-                    break;
-                case "clear":
-                    UserRequest.checkArguments(collection, inputArguments, new Clear(), 1);
-                    break;
-                case "save":
-                    UserRequest.checkArguments(collection, inputArguments, new Save(), 1);
-                    break;
-                case "add_if_max":
-                    UserRequest.checkArguments(collection, inputArguments, new AddIfMax(), 1);
-                    break;
-                case "remove_greater":
-                    UserRequest.checkArguments(collection, inputArguments, new RemoveGreater(), 1);
-                    break;
-                case "sum_of_age":
-                    UserRequest.checkArguments(collection, inputArguments, new SumOfAge(), 1);
-                    break;
-                case "print_field_ascending_color":
-                    UserRequest.checkArguments(collection, inputArguments, new PrintFieldAscendingColor(), 1);
-                    break;
-                case "remove_by_id":
-                    UserRequest.checkArguments(collection, inputArguments, new RemoveById(), 2);
-                    break;
-                case "remove_at":
-                    UserRequest.checkArguments(collection, inputArguments, new RemoveAtIndex(), 2);
-                    break;
-                case "remove_any_by_type":
-                    UserRequest.checkArguments(collection, inputArguments, new RemoveAnyByType(), 2);
-                    break;
-                case "execute_script":
-                    UserRequest.checkArguments(collection, inputArguments, new ExecuteScript(), 2);
-            }
+            System.out.println("Команды " + commandAndArgument[0] + " не существует!" +
+                    " Для уточнения команд воспользуйтесь командрй help!");
         }
     }
 
-    public static ArrayList<Object> createNewDragon() {
+    public static ArrayList<Object> createNewDragonByUser() {
 
         ArrayList<Object> characteristics = new ArrayList<>();
 
@@ -227,23 +198,9 @@ public class UserRequest {
     public static void setIsWorking(boolean isWorking) {
         UserRequest.isWorking = isWorking;
     }
+
     public static boolean isWorking() {
         return isWorking;
     }
-
-    public static void checkArguments(DragonCollection collection, String[] inputArguments, Command command,
-                                       int argumentCount) {
-        if (inputArguments.length == argumentCount)
-            if (argumentCount == 1)
-                command.execute(collection);
-            else if (argumentCount == 2)
-                command.execute(collection, inputArguments[1]);
-            else {
-                if (argumentCount == 1)
-                    System.out.println("Данная команда не имеет аргументов!");
-                else if (argumentCount == 2)
-                    System.out.println("Данная команда имеет один аргумент!");
-            }
-    }
-
 }
+

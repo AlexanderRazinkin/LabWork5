@@ -1,26 +1,39 @@
 package command;
 
-import collection.DragonCollection;
-
 public class RemoveAtIndex extends Command {
 
+    public RemoveAtIndex() {
+        super(true);
+    }
     @Override
-    public void execute(DragonCollection collection, String argument) {
+    public void execute() {
+        if (checkArgument(getArgument())) {
+            int index = Integer.parseInt((String) getArgument());
 
-        int index = 0;
-
-        try {
-            index = Integer.parseInt(argument);
-        } catch (NumberFormatException e) {
-            System.out.println("В качестве аргумента данная команда принимает целое число!");
-            return;
-        }
-
-        if (index >= 0 && index < collection.getDragonArray().size()) {
-            collection.getDragonArray().remove(index);
-            System.out.println("Элемент с индексом=" + index + " успешно удален из текущей коллекции!");
-        } else {
-            System.out.println("Элемента с таким индексом нет в текущей коллекции");
+            if (index >= 0 && index < getDragonCollection().getDragonArray().size()) {
+                getDragonCollection().getDragonArray().remove(index);
+                System.out.println("Элемент с индексом=" + index + " успешно удален из текущей коллекции!");
+            } else {
+                System.out.println("Элемента с таким индексом нет в текущей коллекции");
+            }
         }
     }
+
+    @Override
+    public boolean checkArgument(Object inputArgument) {
+        if (inputArgument == null) {
+            System.out.println("Команда remove_at_index имеет аргумент типа данных int!");
+            return false;
+        } else if (inputArgument instanceof String) {
+           try {
+               Integer.parseInt((String) inputArgument);
+               return true;
+           } catch (NumberFormatException e) {
+               System.out.println("Команда remove_at_index имеет аргумент типа данных int!");
+               return false;
+           }
+        }
+        return false;
+    }
+
 }

@@ -1,6 +1,5 @@
 package command;
 
-import collection.DragonCollection;
 import dragon.Dragon;
 import dragon.DragonType;
 
@@ -8,30 +7,57 @@ import java.util.ArrayList;
 
 public class RemoveAnyByType extends Command {
 
+    public RemoveAnyByType() {
+        super(true);
+    }
+
     @Override
-    public void execute(DragonCollection collection, String argument) {
+    public void execute() {
+        if (checkArgument(getArgument())) {
+            ArrayList<String> types = new ArrayList<>();
 
-        ArrayList<String> types = new ArrayList<>();
+            for (DragonType type : DragonType.values()) {
+                types.add(type.toString());
+            }
+            if (!types.contains(getArgument())) {
+                System.out.println("Такого типа не существует! Требуется ввести один из следующего списка: ");
+                for (String type : types)
+                    System.out.println(type);
+            }
 
-        for (DragonType type : DragonType.values()) {
-            types.add(type.toString());
+            ArrayList<Dragon> toDelete = new ArrayList<>();
+
+            for (Dragon dragon : getDragonCollection().getDragonArray()) {
+                if (dragon.getType().toString().equals(getArgument())) {
+                    toDelete.add(dragon);
+                }
+            }
+            for (Dragon dragon : toDelete) {
+                getDragonCollection().getDragonArray().remove(dragon);
+            }
+            System.out.println("Было успешно удалено элементов из текущей коллекции: " + toDelete.size());
         }
+    }
 
-        if (!types.contains(argument)) {
-            System.out.println("Такого типа не существует! Требуется ввести один из следующего списка: ");
-            for (String type : types)
-                System.out.println(type);
-        }
-
-        ArrayList<Dragon> toDelete = new ArrayList<>();
-        for (Dragon dragon : collection.getDragonArray()) {
-            if (dragon.getType().toString().equals(argument)) {
-                toDelete.add(dragon);
+    @Override
+    public boolean checkArgument(Object inputArgument) {
+        if (inputArgument == null) {
+            System.out.println("Команда remove_any_by_type имеет один из аргументов: ");
+            for (DragonType type : DragonType.values())
+                System.out.println("\t" + type.toString());
+            return false;
+        } else if (inputArgument instanceof String) {
+            for (DragonType type : DragonType.values()) {
+                if (((String) inputArgument).equals(type.toString()))
+                    return true;
+                else {
+                    System.out.println("Команда remove_any_by_type имеет один из аргументов: ");
+                    for (DragonType type1 : DragonType.values())
+                        System.out.println("\t" + type1.toString());
+                    return false;
+                }
             }
         }
-        for (Dragon dragon : toDelete) {
-            collection.getDragonArray().remove(dragon);
-        }
-        System.out.println("Было успешно удалено элементов из текущей коллекции: " + toDelete.size());
+        return false;
     }
 }

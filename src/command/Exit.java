@@ -1,11 +1,30 @@
 package command;
 
 import collection.DragonCollection;
+import user.UserRequest;
 
 public class Exit extends Command {
 
-    @Override
-    public void execute(DragonCollection collection) {
-        System.out.println("Завершение работы программы!");
+    public Exit() {
+        super(false);
     }
+
+    @Override
+    public void execute() {
+        if (checkArgument(getArgument())) {
+            UserRequest.setIsWorking(false);
+            System.out.println("Завершение работы программы!");
+        }
+    }
+
+    @Override
+    public boolean checkArgument(Object inputArgument) {
+        if (inputArgument == null)
+            return true;
+        else {
+            System.out.println("Команда exit не имеет аргументов!");
+            return false;
+        }
+    }
+
 }

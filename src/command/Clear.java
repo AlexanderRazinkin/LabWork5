@@ -3,8 +3,27 @@ package command;
 import collection.DragonCollection;
 
 public class Clear extends Command {
-    public void execute(DragonCollection collection) {
-        collection.getDragonArray().clear();
-        System.out.println("Коллекция успешно очищена!");
+
+    public Clear() {
+        super(false);
     }
+
+    @Override
+    public void execute() {
+        if (checkArgument(getArgument())) {
+            getDragonCollection().getDragonArray().clear();
+            System.out.println("Коллекция успешно очищена!");
+        }
+    }
+
+    @Override
+    public boolean checkArgument(Object inputArgument) {
+        if (inputArgument == null)
+            return true;
+        else {
+            System.out.println("Команда clear не имеет аргументов!");
+            return false;
+        }
+    }
+
 }

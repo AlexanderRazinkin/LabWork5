@@ -37,9 +37,9 @@ public class JsonParser implements Parser {
 
             obj.put("type", dragon.getType().toString());
 
-            obj.put("character", dragon.getCharacter().toString());
+            obj.put("character", dragon.getCharacter() == null ? "" : dragon.getCharacter().toString());
 
-            obj.put("depth", dragon.getCave().getDepth());
+            obj.put("depth", dragon.getCave() == null ? "" : dragon.getCave().getDepth());
 
             dragonArray.add(obj);
         }
@@ -57,98 +57,41 @@ public class JsonParser implements Parser {
 
     @Override
     public ArrayList<Dragon> read(String filePath) {
-
         ArrayList<Dragon> dragonList = new ArrayList<>();
         JSONParser parser = new JSONParser();
 
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(filePath))) {
-
             JSONArray dragonArray = (JSONArray) parser.parse(reader);
             HashMap<String, Object> dragonValues = new HashMap<>();
             int count = 0;
+
             object:
             for (int i = 0; i < dragonArray.size(); i++) {
 
                 count++;
                 JSONObject obj = (JSONObject) dragonArray.get(i);
 
-
                 //Записываем все значения из объекта
-                for (String fieldName : getFieldNames()) {
+                for (String fieldName : getFieldAndValidator().keySet()) {
+                    if (fieldName.equals("coordinates")) {
+                        if (getFieldAndValidator().get("coordinates").isValid(obj.get(fieldName))) {
+                            dragonValues.put("x", ((JSONArray) obj.get(fieldName)).get(0));
+                            dragonValues.put("y", ((JSONArray) obj.get(fieldName)).get(1));
+                        } else
+                            continue object;
+                    } else if (fieldName.equals("x"))
+                        continue;
+                    else if (fieldName.equals("y")) {
+                        continue;
+                    }
                     dragonValues.put(fieldName, obj.get(fieldName));
                 }
 
                 //Проверяем полученные данные на валиднось
-                for (String fieldName : getFieldNames()) {
-
-                    switch (fieldName) {
-                        case "name":
-                            if (new NameValidator().isValid(dragonValues.get(fieldName)))
-                                break;
-                            else {
-                                System.out.println("Объект по номером - " + count + " не записан в текущую коллекцию!");
-                                continue object;
-                            }
-                        case "coordinates":
-                            if (new CoordinatesValidator().isValid(dragonValues.get(fieldName))) {
-                                dragonValues.put("x", ((JSONArray) obj.get(fieldName)).get(0));
-                                dragonValues.put("y", ((JSONArray) obj.get(fieldName)).get(1));
-                                break;
-                            }
-                            else {
-                                System.out.println("Объект по номером - " + count + " не записан в текущую коллекцию!");
-                                continue object;
-                            }
-                        case "x":
-                            if (new FirstCoordinateValidator().isValid(dragonValues.get(fieldName))) {
-                                break;
-                            } else {
-                                System.out.println("Объект по номером - " + count + " не записан в текущую коллекцию!");
-                                continue object;
-                            }
-                        case "y":
-
-                            if (new SecondCoordinateValidator().isValid(dragonValues.get(fieldName))) {
-                                break;
-                            } else {
-                                System.out.println("Объект по номером - " + count + " не записан в текущую коллекцию!");
-                                continue object;
-                            }
-                        case "age":
-                            if (new AgeValidator().isValid(dragonValues.get(fieldName)))
-                                break;
-                            else {
-                                System.out.println("Объект по номером - " + count + " не записан в текущую коллекцию!");
-                                continue object;
-                            }
-                        case "color":
-                            if (new ColorValidator().isValid(dragonValues.get(fieldName)))
-                                break;
-                            else {
-                                System.out.println("Объект по номером - " + count + " не записан в текущую коллекцию!");
-                                continue object;
-                            }
-                        case "type":
-                            if (new TypeValidator().isValid(dragonValues.get(fieldName)))
-                                break;
-                            else {
-                                System.out.println("Объект по номером - " + count + " не записан в текущую коллекцию!");
-                                continue object;
-                            }
-                        case "character":
-                            if (new CharacterValidator().isValid(dragonValues.get(fieldName)))
-                                break;
-                            else {
-                                System.out.println("Объект по номером - " + count + " не записан в текущую коллекцию!");
-                                continue object;
-                            }
-                        case "depth":
-                            if (new DepthValidator().isValid(dragonValues.get(fieldName)))
-                                break;
-                            else {
-                                System.out.println("Объект по номером - " + count + " не записан в текущую коллекцию!");
-                                continue object;
-                            }
+                for (String fieldName : getFieldAndValidator().keySet()) {
+                    if (!getFieldAndValidator().get(fieldName).isValid(dragonValues.get(fieldName))) {
+                        System.out.println("Объект-" + count + " не записан в текущую коллекцию!");
+                        continue object;
                     }
                 }
 
@@ -179,19 +122,19 @@ public class JsonParser implements Parser {
         return dragonList;
     }
 
-    private ArrayList<String> getFieldNames() {
+    private HashMap<String, Validator> getFieldAndValidator() {
 
-        ArrayList<String> fieldNames = new ArrayList<>();
+        HashMap<String, Validator> fieldNames = new HashMap<>();
 
-        fieldNames.add("name");
-        fieldNames.add("coordinates");
-        fieldNames.add("x");
-        fieldNames.add("y");
-        fieldNames.add("age");
-        fieldNames.add("color");
-        fieldNames.add("type");
-        fieldNames.add("character");
-        fieldNames.add("depth");
+        fieldNames.put("name", new NameValidator());
+        fieldNames.put("coordinates", new CoordinatesValidator());
+        fieldNames.put("x", new FirstCoordinateValidator());
+        fieldNames.put("y", new SecondCoordinateValidator());
+        fieldNames.put("age", new AgeValidator());
+        fieldNames.put("color", new ColorValidator());
+        fieldNames.put("type", new TypeValidator());
+        fieldNames.put("character", new CharacterValidator());
+        fieldNames.put("depth", new DepthValidator());
 
         return fieldNames;
     }

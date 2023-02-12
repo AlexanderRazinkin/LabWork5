@@ -1,24 +1,29 @@
 package command;
 
-import collection.DragonCollection;
-import dragon.Color;
 import dragon.Dragon;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 
 public class PrintFieldAscendingColor extends Command {
 
-    public void execute(DragonCollection collection) {
+    public PrintFieldAscendingColor() {
+        super(false);
+    }
 
-        HashMap<Color, Integer> colorCount = new HashMap<>();
-
-        for (Dragon dragon : collection.getDragonArray()) {
-            if (colorCount.get(dragon.getColor()) == null)
-                colorCount.put(dragon.getColor(), 1);
-            else
-                colorCount.put(dragon.getColor(), colorCount.get(dragon.getColor()) + 1);
+    @Override
+    public void execute() {
+        if (checkArgument(getArgument())) {
+            for (Dragon dragon : Command.getDragonCollection().getDragonArray())
+                System.out.print(dragon.getColor().toString());
         }
     }
+
+    @Override
+    public boolean checkArgument(Object inputArgument) {
+        if (inputArgument == null)
+            return true;
+        else {
+            System.out.println("Команда print_field_ascending_color не имеет аргументов!");
+            return false;
+        }
+    }
+
 }

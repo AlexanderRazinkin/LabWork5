@@ -1,57 +1,65 @@
 package command;
 
 import collection.DragonCollection;
-import dragon.*;
-import user.UserRequest;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Command {
 
-    private static ArrayList<String> commandList;
+    private static DragonCollection dragonCollection;
+    private final boolean hasArgument;
+    private Object argument;
+    private final static HashMap<String, Command> commandMap;
 
     static {
-        commandList = new ArrayList<>();
+        commandMap = new HashMap<>();
 
-        commandList.add("help");
-        commandList.add("info");
-        commandList.add("show");
-        commandList.add("add");
-        commandList.add("remove_by_id");
-        commandList.add("clear");
-        commandList.add("save");
-        commandList.add("exit");
-        commandList.add("remove_at");
-        commandList.add("add_if_max");
-        commandList.add("remove_greater");
-        commandList.add("remove_any_by_type");
-        commandList.add("sum_of_age");
-        commandList.add("print_field_ascending_color");
-        commandList.add("execute_script");
+        commandMap.put("help", new Help());
+        commandMap.put("info", new Info());
+        commandMap.put("show", new Show());
+        commandMap.put("add", new Add());
+        commandMap.put("remove_by_id", new RemoveById());
+        commandMap.put("clear", new Clear());
+        commandMap.put("save", new Save());
+        commandMap.put("exit", new Exit());
+        commandMap.put("remove_at", new RemoveAtIndex());
+        commandMap.put("add_if_max", new AddIfMax());
+        commandMap.put("remove_greater", new RemoveGreater());
+        commandMap.put("remove_any_by_type", new RemoveAnyByType());
+        commandMap.put("sum_of_age", new SumOfAge());
+        commandMap.put("print_field_ascending_color", new PrintFieldAscendingColor());
+        commandMap.put("execute_script", new ExecuteScript());
     }
 
-    protected static Dragon getNewDragon() {
-        ArrayList<Object> characteristics = UserRequest.createNewDragon();
-
-        String name = (String) characteristics.get(0);
-        Coordinates coordinates = (Coordinates) characteristics.get(1);
-        LocalDate creationDate = (LocalDate) characteristics.get(2);
-        Long age = (Long) characteristics.get(3);
-        Color color = (Color) characteristics.get(4);
-        DragonType type = (DragonType) characteristics.get(5);
-        DragonCharacter character = (DragonCharacter) characteristics.get(6);
-        DragonCave cave = (DragonCave) characteristics.get(7);
-
-        return new Dragon(name, coordinates, creationDate, age, color, type, character, cave);
+    public Command(boolean hasArgument) {
+        this.hasArgument = hasArgument;
     }
 
-    public static ArrayList<String> getcommandList() {
-        return commandList;
+    public static HashMap<String, Command> getCommandMap() {
+        return commandMap;
     }
 
-    public void execute(DragonCollection collection){}
-    public void execute(DragonCollection collection, String argument){}
+    public abstract void execute();
 
+    public abstract boolean checkArgument(Object inputArgument);
+
+    public static void setDragonCollection(DragonCollection dragonCollection) {
+        Command.dragonCollection = dragonCollection;
+    }
+
+    public static DragonCollection getDragonCollection() {
+        return Command.dragonCollection;
+    }
+
+    public boolean isHasArgument() {
+        return hasArgument;
+    }
+
+    public Object getArgument() {
+        return argument;
+    }
+
+    public void setArgument(String argument) {
+        this.argument = argument;
+    }
 }

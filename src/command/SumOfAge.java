@@ -4,15 +4,35 @@ import collection.DragonCollection;
 import dragon.Dragon;
 
 public class SumOfAge extends Command {
-    public void execute(DragonCollection collection) {
 
-        long sum = 0;
+    public SumOfAge() {
+        super(false);
+    }
 
-        for (Dragon dragon : collection.getDragonArray()) {
-            sum += dragon.getAge();
+    @Override
+    public void execute() {
+        if (checkArgument(getArgument())) {
+            long sum = 0;
+
+            if (!getDragonCollection().getDragonArray().isEmpty()) {
+                for (Dragon dragon : getDragonCollection().getDragonArray()) {
+                    sum += dragon.getAge();
+                }
+                System.out.println("Суммарный возраст всех элементов текущей коллекции составляет: " + sum);
+            } else {
+                System.out.println("Текущая коллекция пуста!");
+            }
         }
+    }
 
-        System.out.println("Суммарный возраст всех элементов текущей коллекции составляет: " + sum);
+    @Override
+    public boolean checkArgument(Object inputArgument) {
+        if (inputArgument == null)
+            return true;
+        else {
+            System.out.println("Команда sum_of_age не имеет аргументов!");
+            return false;
+        }
     }
 
 }

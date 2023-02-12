@@ -5,9 +5,26 @@ import parsers.JsonParser;
 
 public class Save extends Command {
 
-    public void execute(DragonCollection collection) {
-        JsonParser json = new JsonParser();
-        json.write(collection.getStartFilePath(), collection.getDragonArray());
+    public Save() {
+        super(false);
+    }
+
+    @Override
+    public void execute() {
+        if (checkArgument(getArgument())) {
+            JsonParser json = new JsonParser();
+            json.write(getDragonCollection().getStartFilePath(), getDragonCollection().getDragonArray());
+        }
+    }
+
+    @Override
+    public boolean checkArgument(Object inputArgument) {
+        if (inputArgument == null)
+            return true;
+        else {
+            System.out.println("Команда save не имеет аргументов!");
+            return false;
+        }
     }
 
 }

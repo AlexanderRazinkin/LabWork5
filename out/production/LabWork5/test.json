@@ -6,20 +6,9 @@
     "name": "1",
     "coordinates": [
       1.0,
-      0
-    ],
-    "type": "AIR",
-    "age": 10
-  },
-  {
-    "character": "WISE",
-    "depth": 10,
-    "color": "BLACK",
-    "name": "1",
-    "coordinates": [
-      1.0,
       1
     ],
+    "creationDate": "2023-02-12",
     "type": "AIR",
     "age": 10
   },
@@ -32,6 +21,7 @@
       10.1,
       312
     ],
+    "creationDate": "2023-02-12",
     "type": "UNDERGROUND",
     "age": 421
   }

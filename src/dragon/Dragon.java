@@ -1,6 +1,9 @@
 package dragon;
 
+import user.UserRequest;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Dragon {
 
@@ -26,6 +29,21 @@ public class Dragon {
         this.type = type;
         this.character = character;
         this.cave = cave;
+    }
+
+    public static Dragon getNewDragon() {
+        ArrayList<Object> characteristics = UserRequest.createNewDragonByUser();
+
+        String name = (String) characteristics.get(0);
+        Coordinates coordinates = (Coordinates) characteristics.get(1);
+        LocalDate creationDate = (LocalDate) characteristics.get(2);
+        Long age = (Long) characteristics.get(3);
+        Color color = (Color) characteristics.get(4);
+        DragonType type = (DragonType) characteristics.get(5);
+        DragonCharacter character = (DragonCharacter) characteristics.get(6);
+        DragonCave cave = (DragonCave) characteristics.get(7);
+
+        return new Dragon(name, coordinates, creationDate, age, color, type, character, cave);
     }
 
     @Override

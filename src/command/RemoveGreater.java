@@ -5,18 +5,34 @@ import dragon.Dragon;
 
 public class RemoveGreater extends Command {
 
-    public void execute(DragonCollection collection) {
+    public RemoveGreater() {
+        super(false);
+    }
 
-        Dragon newDragon = getNewDragon();
+    @Override
+    public void execute() {
+        if (checkArgument(getArgument())) {
+            Dragon newDragon = Dragon.getNewDragon();
 
-        for (int i = 0; i < collection.getDragonArray().size(); i++) {
-            if (collection.getDragonArray().get(i).getAge() > newDragon.getAge()) {
-                for (int j = collection.getDragonArray().size() - 1; j >= i; j--) {
-                    collection.getDragonArray().remove(j);
+            for (int i = 0; i < getDragonCollection().getDragonArray().size(); i++) {
+                if (getDragonCollection().getDragonArray().get(i).getAge() > newDragon.getAge()) {
+                    for (int j = getDragonCollection().getDragonArray().size() - 1; j >= i; j--) {
+                        getDragonCollection().getDragonArray().remove(j);
+                    }
+                    return;
                 }
-                return;
             }
         }
-
     }
+
+    @Override
+    public boolean checkArgument(Object inputArgument) {
+        if (inputArgument == null)
+            return true;
+        else {
+            System.out.println("Команда remove_greater не имеет аргументов!");
+            return false;
+        }
+    }
+
 }
