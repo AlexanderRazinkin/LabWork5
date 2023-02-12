@@ -14,10 +14,10 @@ public class RemoveGreater extends Command {
         if (checkArgument(getArgument())) {
             Dragon newDragon = Dragon.getNewDragon();
 
-            for (int i = 0; i < getDragonCollection().getDragonArray().size(); i++) {
-                if (getDragonCollection().getDragonArray().get(i).getAge() > newDragon.getAge()) {
-                    for (int j = getDragonCollection().getDragonArray().size() - 1; j >= i; j--) {
-                        getDragonCollection().getDragonArray().remove(j);
+            for (int i = 0; i < CommandManager.getDragonCollection().getDragonArray().size(); i++) {
+                if (CommandManager.getDragonCollection().getDragonArray().get(i).getAge() > newDragon.getAge()) {
+                    for (int j = CommandManager.getDragonCollection().getDragonArray().size() - 1; j >= i; j--) {
+                        CommandManager.getDragonCollection().getDragonArray().remove(j);
                     }
                     return;
                 }

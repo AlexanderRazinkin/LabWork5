@@ -13,7 +13,7 @@ public class Save extends Command {
     public void execute() {
         if (checkArgument(getArgument())) {
             JsonParser json = new JsonParser();
-            json.write(getDragonCollection().getStartFilePath(), getDragonCollection().getDragonArray());
+            json.write(CommandManager.getDragonCollection().getStartFilePath(), CommandManager.getDragonCollection().getDragonArray());
         }
     }
 

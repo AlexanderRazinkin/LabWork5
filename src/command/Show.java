@@ -12,10 +12,10 @@ public class Show extends Command {
     @Override
     public void execute() {
         if (checkArgument(getArgument())) {
-            if (getDragonCollection().getDragonArray().isEmpty()) {
+            if (CommandManager.getDragonCollection().getDragonArray().isEmpty()) {
                 System.out.println("Текущая коллекция пуста!");
             } else {
-                for (Dragon dragon : getDragonCollection().getDragonArray()) {
+                for (Dragon dragon : CommandManager.getDragonCollection().getDragonArray()) {
                     System.out.println(dragon);
                 }
             }

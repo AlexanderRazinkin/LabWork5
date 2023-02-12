@@ -14,7 +14,7 @@ public class ExecuteScript extends Command {
 
     public ExecuteScript() {
         super(true);
-        this.commandMap = Command.getCommandMap();
+        this.commandMap = CommandManager.getCommandMap();
     }
 
     @Override

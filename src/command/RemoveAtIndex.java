@@ -10,8 +10,8 @@ public class RemoveAtIndex extends Command {
         if (checkArgument(getArgument())) {
             int index = Integer.parseInt((String) getArgument());
 
-            if (index >= 0 && index < getDragonCollection().getDragonArray().size()) {
-                getDragonCollection().getDragonArray().remove(index);
+            if (index >= 0 && index < CommandManager.getDragonCollection().getDragonArray().size()) {
+                CommandManager.getDragonCollection().getDragonArray().remove(index);
                 System.out.println("Элемент с индексом=" + index + " успешно удален из текущей коллекции!");
             } else {
                 System.out.println("Элемента с таким индексом нет в текущей коллекции");

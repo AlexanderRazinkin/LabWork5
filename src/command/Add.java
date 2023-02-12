@@ -13,8 +13,8 @@ public class Add extends Command{
     @Override
     public void execute() {
         if (checkArgument(getArgument())) {
-            getDragonCollection().getDragonArray().add(Dragon.getNewDragon());
-            getDragonCollection().getDragonArray().sort(new SortByAge());
+            CommandManager.getDragonCollection().getDragonArray().add(Dragon.getNewDragon());
+            CommandManager.getDragonCollection().getDragonArray().sort(new SortByAge());
         }
     }
 

@@ -11,7 +11,7 @@ public class Clear extends Command {
     @Override
     public void execute() {
         if (checkArgument(getArgument())) {
-            getDragonCollection().getDragonArray().clear();
+            CommandManager.getDragonCollection().getDragonArray().clear();
             System.out.println("Коллекция успешно очищена!");
         }
     }

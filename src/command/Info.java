@@ -11,9 +11,9 @@ public class Info extends Command {
     @Override
     public void execute() {
         if (checkArgument(getArgument())) {
-            System.out.println("Тип коллекции: " + getDragonCollection().getDragonArray().getClass().toString());
-            System.out.println("Дата инициализации: " + getDragonCollection().getCreationDate().toString());
-            System.out.println("Количество элементов: " + getDragonCollection().getDragonArray().size());
+            System.out.println("Тип коллекции: " + CommandManager.getDragonCollection().getDragonArray().getClass().toString());
+            System.out.println("Дата инициализации: " + CommandManager.getDragonCollection().getCreationDate().toString());
+            System.out.println("Количество элементов: " + CommandManager.getDragonCollection().getDragonArray().size());
         }
     }
 

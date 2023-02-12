@@ -14,8 +14,8 @@ public class SumOfAge extends Command {
         if (checkArgument(getArgument())) {
             long sum = 0;
 
-            if (!getDragonCollection().getDragonArray().isEmpty()) {
-                for (Dragon dragon : getDragonCollection().getDragonArray()) {
+            if (!CommandManager.getDragonCollection().getDragonArray().isEmpty()) {
+                for (Dragon dragon : CommandManager.getDragonCollection().getDragonArray()) {
                     sum += dragon.getAge();
                 }
                 System.out.println("Суммарный возраст всех элементов текущей коллекции составляет: " + sum);

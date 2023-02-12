@@ -27,13 +27,13 @@ public class RemoveAnyByType extends Command {
 
             ArrayList<Dragon> toDelete = new ArrayList<>();
 
-            for (Dragon dragon : getDragonCollection().getDragonArray()) {
+            for (Dragon dragon : CommandManager.getDragonCollection().getDragonArray()) {
                 if (dragon.getType().toString().equals(getArgument())) {
                     toDelete.add(dragon);
                 }
             }
             for (Dragon dragon : toDelete) {
-                getDragonCollection().getDragonArray().remove(dragon);
+                CommandManager.getDragonCollection().getDragonArray().remove(dragon);
             }
             System.out.println("Было успешно удалено элементов из текущей коллекции: " + toDelete.size());
         }

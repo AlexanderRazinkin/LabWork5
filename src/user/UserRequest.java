@@ -1,7 +1,7 @@
 package user;
 
-import collection.DragonCollection;
-import command.*;
+import command.Command;
+import command.CommandManager;
 import dragon.*;
 
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ public class UserRequest {
     private static boolean isWorking;
 
     static {
-        commandMap = Command.getCommandMap();
+        commandMap = CommandManager.getCommandMap();
         scanner = new Scanner(System.in);
         isWorking = true;
     }

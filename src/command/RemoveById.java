@@ -13,9 +13,9 @@ public class RemoveById extends Command {
         if (checkArgument(getArgument())) {
             int id = Integer.parseInt((String) getArgument());
 
-            for (Dragon dragon : getDragonCollection().getDragonArray()) {
+            for (Dragon dragon : CommandManager.getDragonCollection().getDragonArray()) {
                 if (dragon.getId() == id) {
-                    getDragonCollection().getDragonArray().remove(dragon);
+                    CommandManager.getDragonCollection().getDragonArray().remove(dragon);
                     System.out.println("Элемент с id=" + id + " успешно удален из текущей коллекции!");
                     return;
                 }

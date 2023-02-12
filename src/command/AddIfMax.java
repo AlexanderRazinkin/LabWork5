@@ -14,9 +14,9 @@ public class AddIfMax extends Command {
     public void execute() {
         Dragon dragon = Dragon.getNewDragon();
 
-        if (dragon.getAge() > getDragonCollection().getDragonArray().get(-1).getAge()) {
-            getDragonCollection().getDragonArray().add(dragon);
-            getDragonCollection().getDragonArray().sort(new SortByAge());
+        if (dragon.getAge() > CommandManager.getDragonCollection().getDragonArray().get(-1).getAge()) {
+            CommandManager.getDragonCollection().getDragonArray().add(dragon);
+            CommandManager.getDragonCollection().getDragonArray().sort(new SortByAge());
             System.out.println("Элемент успешно добавлен в текущую коллекцию!");
         } else {
             System.out.println("Элемент не добавлен в текущую коллекцию!");

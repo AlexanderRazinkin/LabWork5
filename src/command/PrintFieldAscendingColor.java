@@ -11,7 +11,7 @@ public class PrintFieldAscendingColor extends Command {
     @Override
     public void execute() {
         if (checkArgument(getArgument())) {
-            for (Dragon dragon : Command.getDragonCollection().getDragonArray())
+            for (Dragon dragon : CommandManager.getDragonCollection().getDragonArray())
                 System.out.print(dragon.getColor().toString());
         }
     }
