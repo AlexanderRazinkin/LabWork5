@@ -1,5 +1,4 @@
 import collection.DragonCollection;
-import command.Command;
 import command.CommandManager;
 import parsers.JsonParser;
 import user.UserRequest;

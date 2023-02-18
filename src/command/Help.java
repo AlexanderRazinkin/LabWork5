@@ -1,7 +1,5 @@
 package command;
 
-import collection.DragonCollection;
-
 public class Help extends Command {
 
     public Help() {
