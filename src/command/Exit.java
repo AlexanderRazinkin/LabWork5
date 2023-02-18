@@ -1,6 +1,5 @@
 package command;
 
-import collection.DragonCollection;
 import user.UserRequest;
 
 public class Exit extends Command {

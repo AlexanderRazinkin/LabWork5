@@ -1,11 +1,19 @@
 import collection.DragonCollection;
-import command.Command;
 import command.CommandManager;
 import parsers.JsonParser;
 import user.UserRequest;
 
 public class Programm {
     public static void main(String[] args) {
+
+        String filePath = System.getenv("FILEPATH");
+
+        if (filePath == null) {
+            System.out.println("Переменной окружения FILEPATH не существует!");
+            return;
+        }
+
+        args = filePath.split(" ");
 
         if (args.length != 1) {
             System.out.println("Требуется ввести один аргумент - ссылку на файл формата json!");
