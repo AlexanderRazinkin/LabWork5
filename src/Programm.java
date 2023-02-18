@@ -5,7 +5,6 @@ import user.UserRequest;
 
 public class Programm {
     public static void main(String[] args) {
-
         String filePath = System.getenv("FILEPATH");
 
         if (filePath == null) {
