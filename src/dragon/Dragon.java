@@ -1,6 +1,6 @@
 package dragon;
 
-import user.UserRequest;
+import user.UserManager;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class Dragon {
     }
 
     public static Dragon getNewDragon() {
-        ArrayList<Object> characteristics = UserRequest.createNewDragonByUser();
+        ArrayList<Object> characteristics = UserManager.createNewDragonByUser();
 
         String name = (String) characteristics.get(0);
         Coordinates coordinates = (Coordinates) characteristics.get(1);

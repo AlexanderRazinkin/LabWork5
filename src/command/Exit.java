@@ -1,6 +1,6 @@
 package command;
 
-import user.UserRequest;
+import user.UserManager;
 
 public class Exit extends Command {
 
@@ -11,7 +11,7 @@ public class Exit extends Command {
     @Override
     public void execute() {
         if (checkArgument(getArgument())) {
-            UserRequest.setIsWorking(false);
+            UserManager.setIsWorking(false);
             System.out.println("Завершение работы программы!");
         }
     }

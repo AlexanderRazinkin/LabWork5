@@ -108,7 +108,7 @@ public class JsonParser implements Parser {
                         (dragonValues.get("depth")).toString().equals("") ? null :
                                 new DragonCave((int) ((Long) dragonValues.get("depth")).longValue())
                 ));
-                System.out.println("Объект - " + count + " успешно добавлен в текущую коллекцию!");
+                System.out.println("Объект-" + count + " успешно добавлен в текущую коллекцию!");
             }
 
         } catch (FileNotFoundException e) {

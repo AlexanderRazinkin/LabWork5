@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class UserRequest {
+public class UserManager {
 
     private static HashMap<String, Command> commandMap;
     private static Scanner scanner;
@@ -24,12 +24,12 @@ public class UserRequest {
 
     public static void requestCommand() {
         System.out.print("Введите команду: ");
-        String userRequest = scanner.nextLine().strip();
+        String UserManager = scanner.nextLine().strip();
 
-        while (userRequest.contains("  "))
-            userRequest = userRequest.replaceAll("  ", " ");
+        while (UserManager.contains("  "))
+            UserManager = UserManager.replaceAll("  ", " ");
 
-        String[] commandAndArgument = userRequest.split(" ");
+        String[] commandAndArgument = UserManager.split(" ");
         String command = commandAndArgument[0];
         String argument;
 
@@ -196,7 +196,7 @@ public class UserRequest {
     }
 
     public static void setIsWorking(boolean isWorking) {
-        UserRequest.isWorking = isWorking;
+        UserManager.isWorking = isWorking;
     }
 
     public static boolean isWorking() {

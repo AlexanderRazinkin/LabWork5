@@ -1,7 +1,7 @@
 import collection.DragonCollection;
 import command.CommandManager;
 import parsers.JsonParser;
-import user.UserRequest;
+import user.UserManager;
 
 public class Programm {
     public static void main(String[] args) {
@@ -12,7 +12,7 @@ public class Programm {
             return;
         }
 
-        args = filePath.split(" ");
+        args = filePath.strip().split(" ");
 
         if (args.length != 1) {
             System.out.println("Требуется ввести один аргумент - ссылку на файл формата json!");
@@ -23,10 +23,8 @@ public class Programm {
         DragonCollection collection = new DragonCollection(jsonParser.read(args[0]), args[0]);
         CommandManager.setDragonCollection(collection);
 
-        while (UserRequest.isWorking()) {
-            UserRequest.requestCommand();
+        while (UserManager.isWorking()) {
+            UserManager.requestCommand();
         }
-
-
     }
 }
