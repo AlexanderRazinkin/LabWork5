@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import parsers.validators.*;
+import user.UserManager;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -56,12 +57,16 @@ public class JsonParser implements Parser {
     }
 
     @Override
-    public ArrayList<Dragon> read(String filePath) {
+    public ArrayList<Dragon> read(String filePath){
         ArrayList<Dragon> dragonList = new ArrayList<>();
         JSONParser parser = new JSONParser();
-
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(filePath))) {
             JSONArray dragonArray = (JSONArray) parser.parse(reader);
+
+            if (dragonArray.isEmpty()) {
+                return dragonList;
+            }
+
             HashMap<String, Object> dragonValues = new HashMap<>();
             int count = 0;
 
@@ -117,8 +122,11 @@ public class JsonParser implements Parser {
             e.printStackTrace();
         } catch (ParseException e) {
             System.out.println("Файл поврежден! Перепроверьте корректность его заполнения! Учтите, что весь файл - " +
-                    "это массив объектов, т.е. файл должен начинаться с \"[\" и заканчиваться \"]\"");
+                    "это массив объектов, т.е. файл должен начинаться с \"[\" и заканчиваться \"]\"!\n" +
+                    "Файл может не содержать никаких объектов, но учтите условие, указанное выше!");
+            UserManager.setIsWorking(false);
         }
+
         return dragonList;
     }
 
