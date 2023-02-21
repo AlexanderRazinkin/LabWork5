@@ -79,8 +79,7 @@ public class UserManager {
             do {
                 try {
                     scanner = new Scanner(System.in);
-                    System.out.print("Введите координату x в типе данных float (в качестве разделения целой и дробной" +
-                            " частей используйте запятую): ");
+                    System.out.print("Введите координату x в типе данных float: ");
                     userAnswer = scanner.nextLine().strip();
                     if (!checkNull(userAnswer) && !isNull(userAnswer))
                         x = Float.parseFloat(userAnswer);
