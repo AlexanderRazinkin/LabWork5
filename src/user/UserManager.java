@@ -9,6 +9,7 @@ import parsers.validators.ValidatorManager;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class UserManager {
@@ -61,10 +62,14 @@ public class UserManager {
 
         String name = "";
         do {
-            System.out.print("Введите ненулевое имя: ");
-            userAnswer = scanner.nextLine().strip();
-            if (!isNull(userAnswer))
-                name = userAnswer;
+            try {
+                System.out.print("Введите ненулевое имя: ");
+                userAnswer = scanner.nextLine().strip();
+                if (!isNull(userAnswer))
+                    name = userAnswer;
+            } catch (NoSuchElementException e) {
+                isWorking = false;
+            }
         } while (!FieldAndValidator.get("name").isValid(name));
         dragonCharacteristics.put("name", name);
 
@@ -78,6 +83,8 @@ public class UserManager {
                 if (!checkNull(userAnswer) && !isNull(userAnswer))
                     x = Float.parseFloat(userAnswer);
             } catch (NumberFormatException e) {
+            } catch (NoSuchElementException e) {
+                isWorking = false;
             }
         } while (x == null || !FieldAndValidator.get("x").isValid(Double.valueOf(x)));
         dragonCharacteristics.put("x", (float) x.doubleValue());
@@ -91,6 +98,8 @@ public class UserManager {
                 if (!checkNull(userAnswer) && !isNull(userAnswer))
                     y = Integer.parseInt(userAnswer);
             } catch (NumberFormatException e) {
+            } catch (NoSuchElementException e) {
+                isWorking = false;
             }
         } while (y == null || !FieldAndValidator.get("y").isValid(Long.valueOf(y)));
         dragonCharacteristics.put("y", (int) y.longValue());
@@ -110,6 +119,8 @@ public class UserManager {
                 if (!checkNull(userAnswer) && !isNull(userAnswer))
                     age = Long.parseLong(userAnswer);
             } catch (NumberFormatException e) {
+            } catch (NoSuchElementException e) {
+                isWorking = false;
             }
         } while (age == null || !FieldAndValidator.get("age").isValid(age));
         dragonCharacteristics.put("age", age);
@@ -146,6 +157,8 @@ public class UserManager {
                 else
                     break;
             } catch (NumberFormatException e) {
+            } catch (NoSuchElementException) {
+                isWorking = false;
             }
         } while (!FieldAndValidator.get("depth").isValid(Long.valueOf(depth)));
         dragonCharacteristics.put("cave", userAnswer.equals("") ? null : new DragonCave(depth));
@@ -171,6 +184,8 @@ public class UserManager {
                 userAnswer = Integer.parseInt(scanner.nextLine().strip());
             } catch (NumberFormatException e) {
                 System.out.println("Требуется ввести целое число!");
+            } catch (NoSuchElementException e) {
+                isWorking = false;
             }
         } while (userAnswer == 0);
 
