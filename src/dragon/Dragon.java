@@ -3,7 +3,7 @@ package dragon;
 import user.UserManager;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Map;
 
 public class Dragon {
 
@@ -32,16 +32,16 @@ public class Dragon {
     }
 
     public static Dragon getNewDragon() {
-        ArrayList<Object> characteristics = UserManager.createNewDragonByUser();
+        Map<String, Object> characteristics = UserManager.createNewDragonByUser();
 
-        String name = (String) characteristics.get(0);
-        Coordinates coordinates = (Coordinates) characteristics.get(1);
-        LocalDate creationDate = (LocalDate) characteristics.get(2);
-        Long age = (Long) characteristics.get(3);
-        Color color = (Color) characteristics.get(4);
-        DragonType type = (DragonType) characteristics.get(5);
-        DragonCharacter character = (DragonCharacter) characteristics.get(6);
-        DragonCave cave = (DragonCave) characteristics.get(7);
+        String name = (String) characteristics.get("name");
+        Coordinates coordinates = (Coordinates) characteristics.get("coordinates");
+        LocalDate creationDate = (LocalDate) characteristics.get("creationDate");
+        Long age = (Long) characteristics.get("age");
+        Color color = (Color) characteristics.get("color");
+        DragonType type = (DragonType) characteristics.get("type");
+        DragonCharacter character = (DragonCharacter) characteristics.get("character");
+        DragonCave cave = (DragonCave) characteristics.get("cave");
 
         return new Dragon(name, coordinates, creationDate, age, color, type, character, cave);
     }

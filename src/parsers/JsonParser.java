@@ -5,7 +5,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import parsers.validators.*;
+import parsers.validators.ValidatorManager;
 import user.UserManager;
 
 import java.io.*;
@@ -77,9 +77,9 @@ public class JsonParser implements Parser {
                 JSONObject obj = (JSONObject) dragonArray.get(i);
 
                 //Записываем все значения из объекта
-                for (String fieldName : getFieldAndValidator().keySet()) {
+                for (String fieldName : ValidatorManager.getFieldAndValidator().keySet()) {
                     if (fieldName.equals("coordinates")) {
-                        if (getFieldAndValidator().get("coordinates").isValid(obj.get(fieldName))) {
+                        if (ValidatorManager.getFieldAndValidator().get("coordinates").isValid(obj.get(fieldName))) {
                             dragonValues.put("x", ((JSONArray) obj.get(fieldName)).get(0));
                             dragonValues.put("y", ((JSONArray) obj.get(fieldName)).get(1));
                         } else
@@ -93,8 +93,8 @@ public class JsonParser implements Parser {
                 }
 
                 //Проверяем полученные данные на валиднось
-                for (String fieldName : getFieldAndValidator().keySet()) {
-                    if (!getFieldAndValidator().get(fieldName).isValid(dragonValues.get(fieldName))) {
+                for (String fieldName : ValidatorManager.getFieldAndValidator().keySet()) {
+                    if (!ValidatorManager.getFieldAndValidator().get(fieldName).isValid(dragonValues.get(fieldName))) {
                         System.out.println("Объект-" + count + " не записан в текущую коллекцию!");
                         continue object;
                     }
@@ -115,11 +115,12 @@ public class JsonParser implements Parser {
                 ));
                 System.out.println("Объект-" + count + " успешно добавлен в текущую коллекцию!");
             }
-
         } catch (FileNotFoundException e) {
-            System.out.println("Файла по указаному пути не существует!");
+            System.out.println("Файла по указаному пути не существует либо отсутствуют права на чтение!");
+            UserManager.setIsWorking(false);
         } catch (IOException e) {
             e.printStackTrace();
+            UserManager.setIsWorking(false);
         } catch (ParseException e) {
             System.out.println("Файл поврежден! Перепроверьте корректность его заполнения! Учтите, что весь файл - " +
                     "это массив объектов, т.е. файл должен начинаться с \"[\" и заканчиваться \"]\"!\n" +
@@ -128,22 +129,5 @@ public class JsonParser implements Parser {
         }
 
         return dragonList;
-    }
-
-    private HashMap<String, Validator> getFieldAndValidator() {
-
-        HashMap<String, Validator> fieldNames = new HashMap<>();
-
-        fieldNames.put("name", new NameValidator());
-        fieldNames.put("coordinates", new CoordinatesValidator());
-        fieldNames.put("x", new FirstCoordinateValidator());
-        fieldNames.put("y", new SecondCoordinateValidator());
-        fieldNames.put("age", new AgeValidator());
-        fieldNames.put("color", new ColorValidator());
-        fieldNames.put("type", new TypeValidator());
-        fieldNames.put("character", new CharacterValidator());
-        fieldNames.put("depth", new DepthValidator());
-
-        return fieldNames;
     }
 }
