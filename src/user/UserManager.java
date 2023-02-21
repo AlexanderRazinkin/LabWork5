@@ -157,7 +157,7 @@ public class UserManager {
                 else
                     break;
             } catch (NumberFormatException e) {
-            } catch (NoSuchElementException) {
+            } catch (NoSuchElementException e) {
                 isWorking = false;
             }
         } while (!FieldAndValidator.get("depth").isValid(Long.valueOf(depth)));
