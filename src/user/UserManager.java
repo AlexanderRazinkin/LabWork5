@@ -12,6 +12,10 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+
+/**
+ * В данном классе осуществляется все взаимодействие с пользователем
+ */
 public class UserManager {
 
     private static HashMap<String, Command> commandMap;
@@ -56,7 +60,7 @@ public class UserManager {
         } catch (NoSuchElementException e) {
             System.out.println("АЯ-ЯЙ программу ломать!");
             isWorking = false;
-            return;
+            System.exit(0);
         }
     }
 

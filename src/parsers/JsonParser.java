@@ -9,10 +9,16 @@ import parsers.validators.ValidatorManager;
 import user.UserManager;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+/**
+ * Парсинг файла формата .json осуществляется при помощи сторонней библиотеки simple-json
+ */
 public class JsonParser implements Parser {
 
     @Override
@@ -61,6 +67,9 @@ public class JsonParser implements Parser {
         ArrayList<Dragon> dragonList = new ArrayList<>();
         JSONParser parser = new JSONParser();
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(filePath))) {
+            //Проверка на пустоту файла
+            if (Files.readAllLines(Path.of(filePath)).isEmpty())
+                return dragonList;
             JSONArray dragonArray = (JSONArray) parser.parse(reader);
 
             if (dragonArray.isEmpty()) {
@@ -72,8 +81,9 @@ public class JsonParser implements Parser {
 
             object:
             for (int i = 0; i < dragonArray.size(); i++) {
+                System.out.println("Считываем объект-" + ++count + ":");
 
-                count++;
+
                 JSONObject obj = (JSONObject) dragonArray.get(i);
 
                 //Записываем все значения из объекта

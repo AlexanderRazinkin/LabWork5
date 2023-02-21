@@ -10,16 +10,19 @@ import java.util.HashMap;
 public class ExecuteScript extends Command {
 
     private HashMap<String, Command> commandMap;
+    private ArrayList<String> filePaths;
 
 
     public ExecuteScript() {
         super(true);
         this.commandMap = CommandManager.getCommandMap();
+        this.filePaths = new ArrayList<>();
     }
 
     @Override
     public void execute() {
         if (checkArgument(getArgument())) {
+            filePaths.add((String) getArgument());
             ArrayList<String> operationList = new ArrayList<>();
 
             try (InputStreamReader reader = new InputStreamReader(new FileInputStream((String) getArgument()))) {
@@ -41,7 +44,7 @@ public class ExecuteScript extends Command {
                 operationList.add(command);
             } catch (
                     FileNotFoundException e) {
-                System.out.println("Файла по указаному пути не существует!");
+                System.out.println("Файла по указанному пути не существует или отсутствуют права на чтение!");
             } catch (
                     IOException e) {
                 e.printStackTrace();
@@ -52,33 +55,34 @@ public class ExecuteScript extends Command {
                     operation = operation.replaceAll("  ", " ");
 
                 String[] commandAndArgument = operation.split(" ");
+                String command = commandAndArgument[0];
+                String argument;
 
-                if (commandAndArgument.length > 2) {
+                if (commandAndArgument.length == 1)
+                    argument = null;
+                else if (commandAndArgument.length == 2)
+                    argument = commandAndArgument[1];
+                else {
                     System.out.println("Требуется ввести *команда* *аргумент* (при его наличии)!");
                     return;
                 }
 
-                if (commandAndArgument[0].equals("execute_script")) {
-                    if (commandAndArgument.length == 2 &&
-                            checkRecursion((String) getArgument(), (String) getArgument())) {
-                        commandMap.get("execute_script").execute();
+                if (commandMap.containsKey(commandAndArgument[0])) {
+                    if (commandAndArgument[0].equals("execute_script")) {
+                        if (filePaths.contains(commandAndArgument[1])) {
+                            System.out.println("Команда execute_script не выполняется, чтобы не допустить рекурсию!");
+                            continue;
+                        }
                     }
-                } else if (commandMap.containsKey(commandAndArgument[0])) {
+                    commandMap.get(commandAndArgument[0]).setArgument(argument);
                     commandMap.get(commandAndArgument[0]).execute();
-                } else
-                    System.out.println("Команды " + operation + " не существует! " +
-                            "Для уточнения команд воспользуйтесь командой help!");
+                } else {
+                    System.out.println("Команды " + commandAndArgument[0] + " не существует!" +
+                            " Для уточнения команд воспользуйтесь командой help!");
+                }
             }
+            filePaths.remove(getArgument());
         }
-    }
-
-    private boolean checkRecursion(String filePath, String inputFilePath) {
-        if (filePath.equals(inputFilePath)) {
-            System.out.println("Команда execute_script не выполянется, чтобы не допустить рекурсии" +
-                    " (исходный файл коллекции и файла команды совпадают)!");
-            return false;
-        } else
-            return true;
     }
 
     @Override

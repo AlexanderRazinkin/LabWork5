@@ -4,6 +4,9 @@ import dragon.Dragon;
 
 import java.util.Comparator;
 
+/**
+ * Сортировка осущесвляется по значению поля age
+ */
 public class SortByAge implements Comparator<Dragon> {
 
     @Override

@@ -1,3 +1,2 @@
 show
-execute_script ./script.txt
-sho
+execute_script ./script1.txt

@@ -3,6 +3,10 @@ import command.CommandManager;
 import parsers.JsonParser;
 import user.UserManager;
 
+
+/**
+ * Из данного класса осуществляется запуск программы
+ */
 public class Programm {
     public static void main(String[] args) {
         String filePath = System.getenv("FILEPATH");
