@@ -12,6 +12,8 @@ public class Add extends Command{
     @Override
     public void execute() {
         if (checkArgument(getArgument())) {
+            if (Dragon.getNewDragon() == null)
+                return;
             CommandManager.getDragonCollection().getDragonArray().add(Dragon.getNewDragon());
             CommandManager.getDragonCollection().getDragonArray().sort(new SortByAge());
         }

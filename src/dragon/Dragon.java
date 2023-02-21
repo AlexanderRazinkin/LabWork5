@@ -32,7 +32,11 @@ public class Dragon {
     }
 
     public static Dragon getNewDragon() {
+
         Map<String, Object> characteristics = UserManager.createNewDragonByUser();
+        if (characteristics == null)
+            return null;
+
 
         String name = (String) characteristics.get("name");
         Coordinates coordinates = (Coordinates) characteristics.get("coordinates");
