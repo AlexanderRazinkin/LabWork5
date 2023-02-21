@@ -3,11 +3,12 @@ package user;
 import command.Command;
 import command.CommandManager;
 import dragon.*;
+import parsers.validators.Validator;
+import parsers.validators.ValidatorManager;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class UserManager {
@@ -23,6 +24,7 @@ public class UserManager {
     }
 
     public static void requestCommand() {
+        scanner = new Scanner(System.in);
         System.out.print("Введите команду: ");
         String UserManager = scanner.nextLine().strip();
 
@@ -51,140 +53,123 @@ public class UserManager {
         }
     }
 
-    public static ArrayList<Object> createNewDragonByUser() {
+    public static Map<String, Object> createNewDragonByUser() {
 
-        ArrayList<Object> characteristics = new ArrayList<>();
+        Map<String, Validator> FieldAndValidator = ValidatorManager.getFieldAndValidator();
+        Map<String, Object> dragonCharacteristics = new HashMap<>();
+        String userAnswer = "";
 
         String name;
-
         do {
             System.out.print("Введите ненулевое имя: ");
             name = scanner.nextLine().strip();
-        } while (name.equals(""));
-        characteristics.add(name);
+        } while (!FieldAndValidator.get("name").isValid(name));
+        dragonCharacteristics.put("name", name);
 
-        Float x;
-        while (true) {
+        Float x = null;
+        do {
             try {
-                System.out.print("Введите координату x в типе данных float: ");
-                x = scanner.nextFloat();
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Требуется ввести число в типе данных float!");
-                scanner.next();
+                scanner = new Scanner(System.in);
+                System.out.print("Введите координату x в типе данных float (в качестве разделения целой и дробной" +
+                        " частей используйте запятую): ");
+                userAnswer = scanner.nextLine().strip();
+                if (!checkNull(userAnswer))
+                    x = Float.parseFloat(userAnswer);
+            } catch (NumberFormatException e) {
             }
-        }
-        Integer y;
-        while (true) {
+        } while (x == null || !FieldAndValidator.get("x").isValid(Double.valueOf(x)));
+        dragonCharacteristics.put("x", (float) x.doubleValue());
+
+        Integer y = null;
+        do {
             try {
+                scanner = new Scanner(System.in);
                 System.out.print("Введите координату y в типе данных int: ");
-                y = scanner.nextInt();
-                if (y > -323)
-                    break;
-                else
-                    System.out.println("Координата y должна быть больше -323");
-            } catch (InputMismatchException e) {
-                System.out.println("Требуется ввести число в типе данных int!");
-                scanner.next();
+                userAnswer = scanner.nextLine().strip();
+                if (checkNull(userAnswer))
+                    continue;
+                y = Integer.parseInt(userAnswer);
+            } catch (NumberFormatException e) {
             }
-        }
-        Coordinates coordinates = new Coordinates(x, y);
-        characteristics.add(coordinates);
+        } while (y == null || !FieldAndValidator.get("y").isValid(Long.valueOf(y)));
+        dragonCharacteristics.put("y", (int) y.longValue());
+
+        Coordinates coordinates = new Coordinates((float) x.doubleValue(), (int) y.longValue());
+        dragonCharacteristics.put("coordinates", coordinates);
 
         LocalDate creationDate = LocalDate.now();
-        characteristics.add(creationDate);
+        dragonCharacteristics.put("creationDate", creationDate);
 
-        Long age;
-        while (true) {
+        Long age = null;
+        do {
             try {
+                scanner = new Scanner(System.in);
                 System.out.print("Введите возраст в типе данных long: ");
-                age = scanner.nextLong();
-                if (age > 0) {
-                    break;
-                } else {
-                    System.out.println("Возраст должен быть больше 0!");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Требуется ввести число в типе данных long!");
-                scanner.next();
+                userAnswer = scanner.nextLine().strip();
+                if (checkNull(userAnswer))
+                    continue;
+                age = Long.parseLong(userAnswer);
+            } catch (NumberFormatException e) {
             }
-        }
-        characteristics.add(age);
+        } while (age == null || !FieldAndValidator.get("age").isValid(age));
+        dragonCharacteristics.put("age", age);
 
         Color color;
         do {
             color = (Color) requestEnum(Color.values(), "цвет");
         } while (color == null);
-        characteristics.add(color);
+        dragonCharacteristics.put("color", color);
 
         DragonType type;
         do {
             type = (DragonType) requestEnum(DragonType.values(), "тип");
         } while (type == null);
-        characteristics.add(type);
+        dragonCharacteristics.put("type", type);
 
-        DragonCharacter character;
+        DragonCharacter character = null;
+        do {
+            character = (DragonCharacter) requestEnum(DragonCharacter.values(), "характер");
+        } while (type == null);
+        dragonCharacteristics.put("character", character == DragonCharacter.NULL ? null : character);
 
-        while (true) {
-            scanner = new Scanner(System.in);
-            System.out.println("Сделать характер null?");
-            System.out.print("Введите ответ да/нет: ");
-            String userAnswer = scanner.nextLine().strip();
-            if (userAnswer.equals("да")) {
-                character = null;
-                break;
-            } else if (userAnswer.equals(("нет"))) {
-                character = (DragonCharacter) requestEnum(DragonCharacter.values(), "характер");
-                break;
-            } else {
-                System.out.println("Требуется ввести да/нет!");
-            }
-        }
 
-        characteristics.add(character);
-
-        scanner = new Scanner(System.in);
-        String depth;
-        DragonCave cave;
-        while (true) {
-            System.out.print("Введите глубину пещеры в типе данных int: ");
-            depth = scanner.nextLine().strip();
-            if (depth.equals("")) {
-                cave = null;
-                break;
-            } else {
-                try {
-                    cave = new DragonCave(Integer.parseInt(depth));
+        Integer depth = 0;
+        do {
+            try {
+                scanner = new Scanner(System.in);
+                System.out.print("Введите глубину пещеры в типе данных int либо пустую строку: ");
+                userAnswer = scanner.nextLine().strip();
+                if (!userAnswer.equals(""))
+                    depth = Integer.parseInt(scanner.nextLine().strip());
+                else
                     break;
-                } catch (NumberFormatException e) {
-                    System.out.println("Требуется ввести целое число!");
-                }
-            }
-        }
+            } catch (NumberFormatException e) {}
+        } while (!FieldAndValidator.get("depth").isValid(Long.valueOf(depth)));
+        dragonCharacteristics.put("cave", userAnswer.equals("") ? null : new DragonCave(depth));
 
-        characteristics.add(cave);
-        return characteristics;
+        return dragonCharacteristics;
     }
 
     private static Object requestEnum(Object[] values, String name) {
-
+        scanner = new Scanner(System.in);
         int i = 0;
+        boolean isCharacter = values[0] instanceof DragonCharacter;
 
-        if (values[0] instanceof DragonCharacter)
-
-            System.out.println("Выберите " + name + ":");
+        System.out.println("Выберите " + name + ":");
         for (Object value : values) {
             System.out.println("\t" + ++i + "-" + value.toString());
         }
-        System.out.print("Введите целое число от 1 до " + values.length + ": ");
-        int userAnswer;
 
-        try {
-            userAnswer = scanner.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("Требуется ввести целое число!");
-            return null;
-        }
+        int userAnswer = 0;
+
+        do {
+            try {
+                System.out.print("Введите целое число от 1 до " + values.length + ": ");
+                userAnswer = Integer.parseInt(scanner.nextLine().strip());
+            } catch (NumberFormatException e) {
+                System.out.println("Требуется ввести целое число!");
+            }
+        } while (userAnswer == 0);
 
         if (userAnswer >= 1 && userAnswer <= i) {
             return values[userAnswer - 1];
@@ -193,6 +178,22 @@ public class UserManager {
             return null;
         }
 
+    }
+
+    private static boolean checkNull(String userAnswer) {
+        if (userAnswer.equals("")) {
+            System.out.println("Поле не может быть null!");
+            return true;
+        } else
+            return false;
+    }
+
+    private boolean isNull(String userAnswer) {
+        if (userAnswer.equals("null")) {
+            System.out.println("Для ввода null-значения введите пустую строку!");
+            return true;
+        } else
+            return false;
     }
 
     public static void setIsWorking(boolean isWorking) {

@@ -21,12 +21,12 @@ public class CharacterValidator extends Validator {
                 if (characterStringList.contains((String) value) || ((String) value).equals("")) {
                     return true;
                 } else {
-                    System.out.println("Поле type может хранить пустую строку \"\" или одно их следующиъ значений:");
+                    System.out.println("Поле type может хранить пустую строку \"\" или одно их следующих значений:");
                     System.out.println(characterStringList);
                     return false;
                 }
             } else {
-                System.out.println("Поле type может хранить пустую строку \"\" или одно их следующиъ значений:");
+                System.out.println("Поле type может хранить пустую строку \"\" или одно их следующих значений:");
                 System.out.println(characterStringList);
                 return false;
             }

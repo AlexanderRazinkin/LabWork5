@@ -1,6 +1,5 @@
 package command;
 
-import collection.DragonCollection;
 import parsers.JsonParser;
 
 public class Save extends Command {

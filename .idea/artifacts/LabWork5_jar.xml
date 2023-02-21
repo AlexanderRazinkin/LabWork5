@@ -2,9 +2,6 @@
   <artifact type="jar" name="LabWork5:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/LabWork5_jar</output-path>
     <root id="archive" name="LabWork5.jar">
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$USER_HOME$/Desktop/META-INF/MANIFEST.MF" />
-      </element>
       <element id="module-output" name="LabWork5" />
       <element id="extracted-dir" path="$USER_HOME$/Desktop/json-simple-1.1.1.jar" path-in-jar="/" />
     </root>
