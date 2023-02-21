@@ -25,8 +25,8 @@ public class UserManager {
     }
 
     public static void requestCommand() {
+        scanner = new Scanner(System.in);
         try {
-            scanner = new Scanner(System.in);
             System.out.print("Введите команду: ");
             String UserManager = scanner.nextLine().strip();
 
@@ -147,15 +147,14 @@ public class UserManager {
                 if (isNull(userAnswer))
                     continue;
                 if (!userAnswer.equals(""))
-                    depth = Integer.parseInt(scanner.nextLine().strip());
+                    depth = Integer.parseInt(userAnswer);
                 else
                     break;
             } while (!FieldAndValidator.get("depth").isValid(Long.valueOf(depth)));
             dragonCharacteristics.put("cave", userAnswer.equals("") ? null : new DragonCave(depth));
         } catch (NoSuchElementException e) {
             System.out.println("АЯ-ЯЙ программу ломать!");
-            isWorking = false;
-            return null;
+            System.exit(0);
         }
         return dragonCharacteristics;
     }
@@ -180,8 +179,8 @@ public class UserManager {
             } catch (NumberFormatException e) {
                 System.out.println("Требуется ввести целое число!");
             } catch (NoSuchElementException e) {
-                isWorking = false;
-                return null;
+                System.out.println("АЯ-ЯЙ программу ломать!");
+                System.exit(0);
             }
         } while (userAnswer == 0);
 
