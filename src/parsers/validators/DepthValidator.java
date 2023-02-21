@@ -17,8 +17,7 @@ public class DepthValidator extends Validator {
                             " пустую строку \"\"!");
                     return false;
                 }
-            }
-            else if (value instanceof Long) {
+            } else if (value instanceof Long) {
                 if ((Long) value > 0 && (Long) value <= Integer.MAX_VALUE) {
                     return true;
                 } else {
