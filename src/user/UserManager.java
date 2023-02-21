@@ -145,7 +145,8 @@ public class UserManager {
                     depth = Integer.parseInt(scanner.nextLine().strip());
                 else
                     break;
-            } catch (NumberFormatException e) {}
+            } catch (NumberFormatException e) {
+            }
         } while (!FieldAndValidator.get("depth").isValid(Long.valueOf(depth)));
         dragonCharacteristics.put("cave", userAnswer.equals("") ? null : new DragonCave(depth));
 
